@@ -50,7 +50,7 @@ public class SDCardRecorder {
 				String fileName = file.getName().toLowerCase();
 				if (fileName.endsWith(".wav") || fileName.endsWith(".mp3")) {
 
-					targetIndex++;
+					++targetIndex;
 					copy(file, target, targetIndex);
 
 					// Create #define name and suffix it with a number if a same one already exists
@@ -207,6 +207,12 @@ public class SDCardRecorder {
 				System.out.println(line);
 			}
 		} else {
+			if (target.isFile()) {
+				throw new IllegalArgumentException("Target should be a directory");
+			}
+			if (!target.exists()) {
+				target.mkdirs();
+			}
 			for (File f : target.listFiles()) {
 				deleteRecursively(f);
 			}
